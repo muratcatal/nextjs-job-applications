@@ -7,6 +7,15 @@ const getTotalApplications = async () => {
   return result;
 };
 
+const getReviewApplications = async () => {
+  const result = await prisma.jobApplication.count({
+    where: {
+      status: "INTERVIEW",
+    },
+  });
+  return result;
+};
+
 const getRejectedApplications = async () => {
   const result = await prisma.jobApplication.count({
     where: {
@@ -22,6 +31,15 @@ const getOtherThanRejectedApplications = async () => {
       NOT: {
         status: "REJECTED",
       },
+    },
+  });
+  return result;
+};
+
+const getOfferedApplications = async () => {
+  const result = await prisma.jobApplication.count({
+    where: {
+      status: "OFFER",
     },
   });
   return result;
@@ -45,6 +63,10 @@ export const Page = async () => {
   const otherThanRejectedApplications =
     await getOtherThanRejectedApplications();
 
+  const offeredApplications = await getOfferedApplications();
+
+  const interviewApplications = await getReviewApplications();
+
   const mostRecentApplications = await getMostRecentApplications();
 
   return (
@@ -55,12 +77,21 @@ export const Page = async () => {
           description="Total Applications"
         />
         <Card
-          title={otherThanRejectedApplications.toString()}
-          description="Other than Rejected"
+          title={offeredApplications.toString()}
+          description="Offered Applications"
         />
+        <Card
+          title={interviewApplications.toString()}
+          description="Interview Applications"
+        />
+
         <Card
           title={rejectedApplications.toString()}
           description="Rejected Applications"
+        />
+        <Card
+          title={otherThanRejectedApplications.toString()}
+          description="In progress Applications"
         />
       </div>
       <div>
