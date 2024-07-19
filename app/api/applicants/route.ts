@@ -14,7 +14,7 @@ export const GET = async (req: Request) => {
       userId: user.id,
       AND: {
         company: {
-          contains: searchParams.searchKeyword.toLowerCase(),
+          contains: searchParams.searchKeyword,
           mode: "insensitive",
         },
       },
