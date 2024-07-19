@@ -27,7 +27,7 @@ export const Page = () => {
         onClose={handleClose}
         message="Applicant added"
       />
-      <ApplicantForm onSubmit={(values) => handleSubmit(values)} />;
+      <ApplicantForm onSubmit={(values) => handleSubmit(values)} />
     </>
   );
 };

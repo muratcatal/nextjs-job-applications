@@ -1,5 +1,6 @@
 "use client";
 
+import { ApplicationFilter } from "@/components/application-filter";
 import { ListItem } from "@/components/list-item";
 import axios from "axios";
 import { format } from "date-fns";
@@ -16,15 +17,33 @@ export const Page = () => {
     }[]
   >([]);
 
+  const [searchKeyword, setSearchKeyword] = useState<
+    | {
+        searchKeyword: string;
+      }
+    | undefined
+  >();
+
   useEffect(() => {
     (async () => {
-      const response = await axios.get("/api/applicants");
+      const response = await axios.get("/api/applicants", {
+        params: {
+          ...searchKeyword,
+        },
+      });
       setApplicants(response.data.data);
     })();
-  }, []);
+  }, [searchKeyword]);
 
   return (
     <div className="flex flex-col gap-8">
+      <ApplicationFilter
+        onSearchFilterChanged={function (filter: {
+          searchKeyword: string;
+        }): void {
+          setSearchKeyword(filter);
+        }}
+      />
       {applicants.length > 0 && (
         <div>
           There are <b>{applicants.length}</b> applicants since{" "}
